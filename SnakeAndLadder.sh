@@ -53,7 +53,7 @@ function winPosition()
 		echo "Current Position is > "$currentPosition
 	done
 
-	echo "Reached Final Position"
+	echo "Reached Final Position > " $WIN_POSITION
 }
 
 winPosition
