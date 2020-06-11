@@ -1,12 +1,13 @@
-#!/bin/bash -x
+#!/bin/bash
 
 echo "WELCOME TO SNAKE AND LADDER SIMULATION"
 
 START=0
 WIN_POSITION=100
 
-currentPosition=$START
 diceRolled=0
+playerOnePosition=$START
+playerTwoPosition=$START
 
 function rollDice()
 {
@@ -16,6 +17,7 @@ function rollDice()
 
 function playerOptions()
 {
+	currentPosition=$1
 	rollDice
 	noPlay=0
 	ladder=1
@@ -25,11 +27,11 @@ function playerOptions()
 	case $option in
 		$noPlay)
 			currentPosition=$currentPosition
-			echo "NO MOVEMENT"
+			#echo "NO MOVEMENT"
 			;;
 		$ladder)
 			currentPosition=$(( $currentPosition+$faceValue ))
-			echo "LADDER"
+			#echo "LADDER"
 
 			if [ $currentPosition -gt $WIN_POSITION ]
 			then
@@ -44,10 +46,10 @@ function playerOptions()
 				currentPosition=$START
 			fi
 
-			echo "SNAKE"
+			#echo "SNAKE"
 			;;
 	esac
-
+	echo $currentPosition
 }
 
 function winPosition()
@@ -68,4 +70,29 @@ function winPosition()
 	echo "Number of times the dice rolled > " $diceRolled
 }
 
-winPosition
+function twoPlayers()
+{
+	while [ $playerOnePosition -lt $WIN_POSITION ] && [ $playerTwoPosition -lt $WIN_POSITION ]
+	do
+		playerOnePosition=$(playerOptions $playerOnePosition)
+		echo "Player One Position > " $playerOnePosition
+
+		if [ $playerOnePosition -eq $WIN_POSITION ]
+		then
+			echo "Player One Won The Game"
+ 			break
+		fi
+
+		playerTwoPosition=$(playerOptions $playerTwoPosition)
+		echo "Player Two Positon > " $playerTwoPosition
+
+		if [ $playerTwoPosition -eq $WIN_POSITION ]
+		then
+			echo "Player Two Won The Game"
+		fi
+		diceRolled=$(( $diceRolled+1 ))
+	done
+}
+
+twoPlayers
+echo "Number of times the dice rolled > " $diceRolled
