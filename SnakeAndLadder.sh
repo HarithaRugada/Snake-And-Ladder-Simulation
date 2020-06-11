@@ -1,4 +1,4 @@
-#! /bin/bash/ -x
+#!/bin/bash -x
 
 echo "WELCOME TO SNAKE AND LADDER SIMULATION"
 
@@ -6,9 +6,12 @@ START=0
 WIN_POSITION=100
 
 currentPosition=$START
+diceRolled=0
+
 function rollDice()
 {
 	faceValue=$(( ($RANDOM%6)+1 ))
+	diceRolled=$(( $diceRolled+1 ))
 }
 
 function playerOptions()
@@ -22,17 +25,26 @@ function playerOptions()
 	case $option in
 		$noPlay)
 			currentPosition=$currentPosition
+			echo "NO MOVEMENT"
 			;;
 		$ladder)
 			currentPosition=$(( $currentPosition+$faceValue ))
+			echo "LADDER"
+
+			if [ $currentPosition -gt $WIN_POSITION ]
+			then
+				currentPosition=$(( $currentPosition-$faceValue ))
+			fi
 			;;
 		$snake)
-			currentPosition=$(( $currentPostion-$faceValue ))
+			currentPosition=$(( $currentPosition-$faceValue ))
 
 			if [ $currentPosition -lt $START ]
 			then
 				currentPosition=$START
 			fi
+
+			echo "SNAKE"
 			;;
 	esac
 
@@ -40,20 +52,20 @@ function playerOptions()
 
 function winPosition()
 {
-	playerOptions
-	until [ $currentPosition -ge $WIN_POSITION ]
+	while [ $currentPosition -lt $WIN_POSITION ]
 	do
-		if [ $(( $currentPosition+$faceValue )) -gt $WIN_POSITION ]
+		playerOptions
+
+		if [ $currentPosition -eq $WIN_POSITION ]
 		then
-			currentPosition=$currentPosition
-		else
-			playerOptions
+			currentPosition=$WIN_POSITION
 		fi
 
-		echo "Current Position is > "$currentPosition
+	echo "Current Position is > "$currentPosition
 	done
 
-	echo "Reached Final Position > " $WIN_POSITION
+	echo "WON THE GAME and Reached Final Position > " $WIN_POSITION
+	echo "Number of times the dice rolled > " $diceRolled
 }
 
 winPosition
