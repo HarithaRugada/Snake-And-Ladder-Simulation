@@ -19,10 +19,10 @@ function playerOptions()
 {
 	currentPosition=$1
 	rollDice
-	noPlay=0
-	ladder=1
-	snake=2
-	option=$(( RANDOM%3 ))
+	local noPlay=0
+	local ladder=1
+	local snake=2
+	local option=$(( RANDOM%3 ))
 
 	case $option in
 		$noPlay)
