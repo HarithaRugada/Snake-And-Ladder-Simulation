@@ -5,7 +5,7 @@ echo "WELCOME TO SNAKE AND LADDER SIMULATION"
 START=0
 WIN_POSITION=100
 
-diceRolled=0
+diceRolled=$START
 playerOnePosition=$START
 playerTwoPosition=$START
 
@@ -70,27 +70,30 @@ function winPosition()
 	echo "Number of times the dice rolled > " $diceRolled
 }
 
+function winner()
+{
+	playerOnePosition=$(playerOptions $playerOnePosition)
+	echo "Player One Position > " $playerOnePosition
+
+	playerTwoPosition=$(playerOptions $playerTwoPosition)
+	echo "Player Two Position > " $playerTwoPosition
+
+	diceRolled=$(( $diceRolled+1 ))
+}
+
 function twoPlayers()
 {
 	while [ $playerOnePosition -lt $WIN_POSITION ] && [ $playerTwoPosition -lt $WIN_POSITION ]
 	do
-		playerOnePosition=$(playerOptions $playerOnePosition)
-		echo "Player One Position > " $playerOnePosition
+		winner
 
 		if [ $playerOnePosition -eq $WIN_POSITION ]
 		then
 			echo "Player One Won The Game"
  			break
-		fi
-
-		playerTwoPosition=$(playerOptions $playerTwoPosition)
-		echo "Player Two Positon > " $playerTwoPosition
-
-		if [ $playerTwoPosition -eq $WIN_POSITION ]
-		then
+		else
 			echo "Player Two Won The Game"
 		fi
-		diceRolled=$(( $diceRolled+1 ))
 	done
 }
 
