@@ -91,7 +91,8 @@ function twoPlayers()
 		then
 			echo "Player One Won The Game"
  			break
-		else
+		elif [ $playerTwoPosition -eq $WIN_POSITION ]
+		then
 			echo "Player Two Won The Game"
 		fi
 	done
